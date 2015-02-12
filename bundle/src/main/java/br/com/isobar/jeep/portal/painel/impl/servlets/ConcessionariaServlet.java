@@ -44,7 +44,7 @@ public class ConcessionariaServlet extends SlingAllMethodsServlet {
 		logger.info("Iniciando ConcessionariaServlet > GET");
 		
 		logger.info("Salvando JSON no DAM");
-		final String savedJsonPath = resourceService.writeToDam(ResourceServiceImpl.CONCESSIONARIA_JSON, "[ { \"chave2\" : \"valor2\" } ]");
+		final String savedJsonPath = resourceService.writeToDam(ResourceServiceImpl.CONCESSIONARIA_JSON, "[ { \"chave3\" : \"valor3\" } ]");
 		logger.info("JSON salvo no DAM com sucesso [" + savedJsonPath + "]");
 		
 		Servlet servlet = servletResolver.resolveServlet(request.getResource(), "/apps/jeep-painel/templates/concessionaria.jsp");
