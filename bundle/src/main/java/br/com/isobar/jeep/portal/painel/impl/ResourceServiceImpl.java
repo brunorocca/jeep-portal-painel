@@ -1,15 +1,20 @@
 package br.com.isobar.jeep.portal.painel.impl;
 
+import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.Map;
 
 import javax.jcr.Repository;
+import javax.jcr.Session;
 
 import org.apache.felix.scr.annotations.Component;
 import org.apache.felix.scr.annotations.Reference;
 import org.apache.felix.scr.annotations.Service;
+import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.resource.ResourceResolver;
 import org.apache.sling.api.resource.ResourceResolverFactory;
 import org.apache.sling.jcr.api.SlingRepository;
@@ -20,6 +25,11 @@ import br.com.isobar.jeep.portal.painel.ResourceService;
 
 import com.day.cq.dam.api.Asset;
 import com.day.cq.dam.api.AssetManager;
+import com.day.cq.search.PredicateGroup;
+import com.day.cq.search.Query;
+import com.day.cq.search.QueryBuilder;
+import com.day.cq.search.result.Hit;
+import com.day.cq.search.result.SearchResult;
 
 /**
  * <p>Classe de serviço responsável por gerenciar os resources dentro do AEM.</p>
@@ -89,22 +99,55 @@ public class ResourceServiceImpl implements ResourceService {
      * @param fileName
      * @return
      */
-    public String readFromDam(InputStream is, String fileName) {
+    public String readFromDam(String fileName) {
 		try {
+			logger.info("Iniciando busca no DAM do JSON no path [{}]", JSON_PATH);
 			
-			ResourceResolver resourceResolver = resolverFactory.getAdministrativeResourceResolver(createAuthInfoMap());
+			final Map<String, Object> authInfo = createAuthInfoMap();
+			logger.info("Obtendo AdministrativeResourceResolver [{}]", authInfo);
+			ResourceResolver resourceResolver = resolverFactory.getAdministrativeResourceResolver(authInfo);
+			
+			logger.debug("Iniciando JCR Session");
+			Session session = resourceResolver.adaptTo(Session.class);
+			
+			Map<String, String> map = new HashMap<String, String>();
+			map.put("type", "dam:Asset");
+	        map.put("path", JSON_PATH);
+	        map.put("name", fileName);
+//	        map.put("mime-type", "application/json");
+			
+	        logger.debug("Iniciando QueryBuilder");
+	        QueryBuilder builder = resourceResolver.adaptTo(QueryBuilder.class);
+	        
+	        logger.debug("Criando Query");
+	        Query query = builder.createQuery(PredicateGroup.create(map), session);
+	        
+	        logger.debug("Buscando...");
+	        SearchResult searchResult = query.getResult();
+	        logger.info("Search Results: [{}]", searchResult.getTotalMatches()) ;
+	         
+	        for (Hit hit : searchResult.getHits()) {
+	             
+	            String path = hit.getPath();
+	            logger.info("Path [{}]", path);
+	            Resource rs = resourceResolver.getResource(path);
+	            Asset asset = rs.adaptTo(Asset.class);  
+	               
+	            InputStream data = asset.getOriginal().getStream();
+	            String name = asset.getName();
+	            logger.info("Name [{}]", name);
 
-			// Use AssetManager to place the file into the AEM DAM
-			AssetManager assetMgr = resourceResolver.adaptTo(AssetManager.class);
-			String newFile = JSON_PATH + fileName;
-			assetMgr.createAsset(newFile, is, "image/jpeg", true);
-			
-			// Return the path to the file was stored
-			return newFile;
+	            if(name.equals(fileName)) {
+	            	return getStringFromInputStream(data);
+	            }
+	        }
+	        
+	        return null;
 		} 
 		catch (Exception e) {
-			e.printStackTrace();
+			logger.error("Erro ao buscar json no DAM", e);
 		}
+		
 		return null;
 	}
 
@@ -113,5 +156,35 @@ public class ResourceServiceImpl implements ResourceService {
 		authInfo.put(ResourceResolverFactory.USER, USERNAME);
 		authInfo.put(ResourceResolverFactory.PASSWORD, PASSWORD);
 		return authInfo;
+	}
+	
+	private static String getStringFromInputStream(InputStream is) {
+
+		BufferedReader br = null;
+		StringBuilder sb = new StringBuilder();
+
+		String line;
+		try {
+			br = new BufferedReader(new InputStreamReader(is));
+			while ((line = br.readLine()) != null) {
+				sb.append(line);
+			}
+
+		} 
+		catch (IOException e) {
+			e.printStackTrace();
+		}
+		finally {
+			if (br != null) {
+				try {
+					br.close();
+				} 
+				catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+
+		return sb.toString();
 	}
 }

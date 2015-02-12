@@ -38,24 +38,26 @@ public class ConcessionariaServlet extends SlingAllMethodsServlet {
 	private ResourceService resourceService;
 	
 	@Override
-	protected void doGet(final SlingHttpServletRequest request,
-			final SlingHttpServletResponse response) throws ServletException, IOException {
+	protected void doGet(final SlingHttpServletRequest request, final SlingHttpServletResponse response) 
+			throws ServletException, IOException {
 		
 		logger.info("Iniciando ConcessionariaServlet > GET");
 		
-		logger.info("Salvando JSON no DAM");
-		final String savedJsonPath = resourceService.writeToDam(ResourceServiceImpl.CONCESSIONARIA_JSON, "[ { \"chave3\" : \"valor3\" } ]");
-		logger.info("JSON salvo no DAM com sucesso [" + savedJsonPath + "]");
+		final String savedJsonPath = null;
+//		logger.info("Salvando JSON no DAM");
+//		final String savedJsonPath = resourceService.writeToDam(ResourceServiceImpl.CONCESSIONARIA_JSON, "[ { \"chave5\" : \"valor5\" } ]");
+//		logger.info("JSON salvo no DAM com sucesso [" + savedJsonPath + "]");
+		
+		final String retoredJson = resourceService.readFromDam(ResourceServiceImpl.CONCESSIONARIA_JSON);
 		
 		Servlet servlet = servletResolver.resolveServlet(request.getResource(), "/apps/jeep-painel/templates/concessionaria.jsp");
-	    request.setAttribute("concessionaria", (savedJsonPath != null && !savedJsonPath.isEmpty()) ? savedJsonPath : "NÃO GRAVOU!");
+	    request.setAttribute("concessionaria", (retoredJson != null && !retoredJson.isEmpty()) ? retoredJson : "NÃO GRAVOU!");
 	    servlet.service(request, response);
 	}
 
 	@Override
-	protected void doPost(SlingHttpServletRequest request,
-			SlingHttpServletResponse response) throws ServletException,
-			IOException {
+	protected void doPost(SlingHttpServletRequest request, SlingHttpServletResponse response) 
+			throws ServletException, IOException {
 		
 		final String msg = "Hello Broccaaaaaa!!! Im a Servlet!! METHOD POST";
 		System.out.println(msg);
@@ -66,9 +68,8 @@ public class ConcessionariaServlet extends SlingAllMethodsServlet {
 	}
 
 	@Override
-	protected void doPut(SlingHttpServletRequest request,
-			SlingHttpServletResponse response) throws ServletException,
-			IOException {
+	protected void doPut(SlingHttpServletRequest request, SlingHttpServletResponse response) 
+			throws ServletException, IOException {
 		
 		final String msg = "Hello Broccaaaaaa!!! Im a Servlet!! METHOD PUT";
 		System.out.println(msg);
@@ -79,9 +80,8 @@ public class ConcessionariaServlet extends SlingAllMethodsServlet {
 	}
 
 	@Override
-	protected void doDelete(SlingHttpServletRequest request,
-			SlingHttpServletResponse response) throws ServletException,
-			IOException {
+	protected void doDelete(SlingHttpServletRequest request, SlingHttpServletResponse response) 
+			throws ServletException, IOException {
 
 		final String msg = "Hello Broccaaaaaa!!! Im a Servlet!! METHOD DELETE";
 		System.out.println(msg);

@@ -1,6 +1,5 @@
 package br.com.isobar.jeep.portal.painel;
 
-import java.io.InputStream;
 
 /**
  * A simple service interface
@@ -12,7 +11,7 @@ public interface ResourceService {
      */
     public String getRepositoryName();
     
-    public String readFromDam(InputStream is, String fileName);
+    public String readFromDam(final String fileName);
 
     public String writeToDam(final String fileName, final String json);
 }
