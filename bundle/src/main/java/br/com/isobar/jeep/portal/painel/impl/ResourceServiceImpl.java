@@ -45,7 +45,7 @@ public class ResourceServiceImpl implements ResourceService {
 	public static final String USERNAME = "admin";
 	public static final String PASSWORD = "admin";
 	public static final String JSON_PATH = "/content/dam/jeep-portal/json/";
-	public static final String CONCESSIONARIA_JSON = "ccs.json";
+	public static final String CONCESSIONARIA_JSON = "concessionarias.json";
 	public static final String HEADER_JSON = "header.json";
 	public static final String VEICULOS_JSON = "veiculos.json";
 	
@@ -93,11 +93,13 @@ public class ResourceServiceImpl implements ResourceService {
 		return null;
 	}
     
-    /**
+	/**
+     * <p>Método responsável por ler um JSON no DAM do AEM.</p>
+     * <p>Caminho pré-definido onde o JSON será salvo: "/content/dam/jeep-portal/json/"</p>
      * 
-     * @param is
-     * @param fileName
-     * @return
+     * @param fileName Nome do arquivo json que será lido
+     * 
+     * @return JSON ou <b>null</b> se houve algum erro de leitura.
      */
     public String readFromDam(String fileName) {
 		try {

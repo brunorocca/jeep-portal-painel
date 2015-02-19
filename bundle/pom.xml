@@ -141,6 +141,25 @@
                 <configuration>
                     <instructions>
                         <Bundle-SymbolicName>br.com.isobar.jeep.portal.painel-bundle</Bundle-SymbolicName>
+
+                        <!-- 
+						<Private-Package>br.com.isobar.jeep.portal.painel-bundle</Private-Package>
+						<Embed-Dependency>*;scope=compile|runtime</Embed-Dependency>
+						<Embed-Directory>OSGI-INF/lib</Embed-Directory>
+						<Embed-Transitive>true</Embed-Transitive>
+						<Import-Package>*</Import-Package>
+                       
+                        <Bundle-Version>${project.version}</Bundle-Version>
+                        <Include-Resource>*.jar</Include-Resource>
+                        <Bundle-ClassPath>
+                        </Bundle-ClassPath>
+                        <Fragment-Host></Fragment-Host>
+                        <Export-Package>
+                        </Export-Package>
+                        <Import-Package>!*</Import-Package>
+                        <Embed-Dependency>*;scope=compile|runtime</Embed-Dependency>
+                        <Embed-Transitive>true</Embed-Transitive>
+                         -->
                     </instructions>
                 </configuration>
             </plugin>
