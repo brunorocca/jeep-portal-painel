@@ -1,4 +1,4 @@
-package br.com.isobar.jeep.portal.painel;
+package br.com.isobar.jeep.portal.painel.impl;
 
 
 /**

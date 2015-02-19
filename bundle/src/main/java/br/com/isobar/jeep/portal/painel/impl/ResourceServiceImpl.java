@@ -21,8 +21,6 @@ import org.apache.sling.jcr.api.SlingRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import br.com.isobar.jeep.portal.painel.ResourceService;
-
 import com.day.cq.dam.api.Asset;
 import com.day.cq.dam.api.AssetManager;
 import com.day.cq.search.PredicateGroup;

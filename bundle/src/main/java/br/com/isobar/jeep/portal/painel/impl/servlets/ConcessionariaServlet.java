@@ -1,6 +1,8 @@
 package br.com.isobar.jeep.portal.painel.impl.servlets;
 
+import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 import javax.servlet.Servlet;
 import javax.servlet.ServletException;
@@ -18,8 +20,11 @@ import org.apache.sling.api.servlets.SlingAllMethodsServlet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import br.com.isobar.jeep.portal.painel.ResourceService;
+import br.com.isobar.jeep.portal.importacao.ImportacaoConcessionaria;
+import br.com.isobar.jeep.portal.painel.impl.ResourceService;
 import br.com.isobar.jeep.portal.painel.impl.ResourceServiceImpl;
+import br.com.isobar.jeep.portal.painel.model.ConcessionariaVO;
+import br.com.isobar.jeep.portal.utils.FileUploadJeepUtil;
 
 @Component(immediate = true, metatype = true, label = "Concessionaria Servlet", description = "Concessionaria Servlet")
 @Service
@@ -43,7 +48,7 @@ public class ConcessionariaServlet extends SlingAllMethodsServlet {
 		
 		logger.info("Iniciando ConcessionariaServlet > GET");
 		
-		final String savedJsonPath = null;
+//		final String savedJsonPath = null;
 //		logger.info("Salvando JSON no DAM");
 //		final String savedJsonPath = resourceService.writeToDam(ResourceServiceImpl.CONCESSIONARIA_JSON, "[ { \"chave5\" : \"valor5\" } ]");
 //		logger.info("JSON salvo no DAM com sucesso [" + savedJsonPath + "]");
@@ -55,16 +60,17 @@ public class ConcessionariaServlet extends SlingAllMethodsServlet {
 	    servlet.service(request, response);
 	}
 
+	/**
+	 * Efetua a Importação do CSV de Concessionarias
+	 * 
+	 */
 	@Override
 	protected void doPost(SlingHttpServletRequest request, SlingHttpServletResponse response) 
 			throws ServletException, IOException {
 		
-		final String msg = "Hello Broccaaaaaa!!! Im a Servlet!! METHOD POST";
-		System.out.println(msg);
+		File arquivoCSV = FileUploadJeepUtil.getFileFromRequest(request);
+		List<ConcessionariaVO> listaConcessionaria = ImportacaoConcessionaria.convert(arquivoCSV);
 		
-		final Resource resource = request.getResource();
-		response.getOutputStream().println(resource.toString());
-		response.getOutputStream().println(msg);
 	}
 
 	@Override

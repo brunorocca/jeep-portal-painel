@@ -1,6 +1,6 @@
 package br.com.isobar.jeep.portal.painel.model;
 
-public class Concessionaria {
+public class ConcessionariaVO {
 	
 	/*
 	   "dealersCode": "1",
@@ -42,6 +42,7 @@ public class Concessionaria {
 	private String telefone;
 	private String emailConsultor;
 	private String email;
+	private String emailRepresentante;
 	private String fax;
 	private String website;
 	private String latitude;
@@ -50,13 +51,14 @@ public class Concessionaria {
 	private boolean jeep;
 	private boolean pecasAcessorios;
 	private boolean ram;
-	private boolean razaoSocial;
+	private String razaoSocial;
 	private boolean revisao;
 	private boolean testDrive;
 	private boolean vendaNovo;
 	private boolean vendaSeminovo;
 	private boolean dodge;
 	private boolean eletrica;
+	private boolean chrysler;
 	
 	public Long getCodigo() {
 		return codigo;
@@ -172,12 +174,6 @@ public class Concessionaria {
 	public void setRam(boolean ram) {
 		this.ram = ram;
 	}
-	public boolean isRazaoSocial() {
-		return razaoSocial;
-	}
-	public void setRazaoSocial(boolean razaoSocial) {
-		this.razaoSocial = razaoSocial;
-	}
 	public boolean isRevisao() {
 		return revisao;
 	}
@@ -213,5 +209,23 @@ public class Concessionaria {
 	}
 	public void setEletrica(boolean eletrica) {
 		this.eletrica = eletrica;
+	}
+	public String getRazaoSocial() {
+		return razaoSocial;
+	}
+	public void setRazaoSocial(String razaoSocial) {
+		this.razaoSocial = razaoSocial;
+	}
+	public String getEmailRepresentante() {
+		return emailRepresentante;
+	}
+	public void setEmailRepresentante(String emailRepresentante) {
+		this.emailRepresentante = emailRepresentante;
+	}
+	public boolean isChrysler() {
+		return chrysler;
+	}
+	public void setChrysler(boolean chrysler) {
+		this.chrysler = chrysler;
 	}
 }
