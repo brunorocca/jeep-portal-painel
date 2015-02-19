@@ -39,7 +39,7 @@ import com.google.gson.reflect.TypeToken;
 public class ConcessionariaServlet extends SlingAllMethodsServlet {
 
 	private static final long serialVersionUID = 8542332876733799623L;
-	private Logger logger = LoggerFactory.getLogger(ConcessionariaServlet.class);
+	private static final Logger logger = LoggerFactory.getLogger(ConcessionariaServlet.class);
 	
 	@Reference
 	private ServletResolver servletResolver;
@@ -55,18 +55,7 @@ public class ConcessionariaServlet extends SlingAllMethodsServlet {
 		
 		logger.info("Iniciando ConcessionariaServlet > GET");
 		
-//		final String savedJsonPath = null;
-
-//		logger.info("Salvando JSON no DAM");
-//		final String savedJsonPath = resourceService.writeToDam(ResourceServiceImpl.CONCESSIONARIA_JSON, "[ { \"chave5\" : \"valor5\" } ]");
-//		logger.info("JSON salvo no DAM com sucesso [" + savedJsonPath + "]");
-		
-		final String json = resourceService.readFromDam(ResourceServiceImpl.CONCESSIONARIA_JSON);
-		List<ConcessionariaVO> concessionarias = null;
-		
-		if(StringUtils.isNotBlank(json)) {
-			concessionarias = gson.fromJson(json, new TypeToken<List<ConcessionariaVO>>(){}.getType());
-		}
+		final List<ConcessionariaVO> concessionarias = getConcessionariasJson();
 		
 		Servlet servlet = servletResolver.resolveServlet(request.getResource(), "/apps/jeep-painel/templates/concessionarias.jsp");
 	    request.setAttribute("concessionarias", concessionarias);
@@ -90,6 +79,10 @@ public class ConcessionariaServlet extends SlingAllMethodsServlet {
 	protected void doPut(SlingHttpServletRequest request, SlingHttpServletResponse response) 
 			throws ServletException, IOException {
 		
+		
+		
+		
+		
 		final String msg = "Hello Broccaaaaaa!!! Im a Servlet!! METHOD PUT";
 		System.out.println(msg);
 		
@@ -102,11 +95,48 @@ public class ConcessionariaServlet extends SlingAllMethodsServlet {
 	protected void doDelete(SlingHttpServletRequest request, SlingHttpServletResponse response) 
 			throws ServletException, IOException {
 
-		final String msg = "Hello Broccaaaaaa!!! Im a Servlet!! METHOD DELETE";
-		System.out.println(msg);
+		logger.info("Iniciando ConcessionariaServlet > DELETE");
 		
-		final Resource resource = request.getResource();
-		response.getOutputStream().println(resource.toString());
-		response.getOutputStream().println(msg);
+		final String idConcessionaria = request.getParameter("idConcessionaria");
+		logger.debug("idConcessionaria [{}]", idConcessionaria);
+		
+		final List<ConcessionariaVO> concessionarias = getConcessionariasJson();
+		final ConcessionariaVO ccrToDelete = concessionarias.get(concessionarias.indexOf(new ConcessionariaVO(Long.valueOf(idConcessionaria))));
+		
+		logger.info("Removendo " + ccrToDelete);
+		boolean removed = concessionarias.remove(ccrToDelete);
+		final String jsonPath = saveConcessionariasJson(concessionarias);
+		
+		final String msg;
+		if(removed && StringUtils.isNotBlank(jsonPath)) {
+			msg = "Concessionária " + ccrToDelete.getCodigo() + " - " + ccrToDelete.getNomeFantasia() + " removida com sucesso!";
+		}
+		else {
+			msg = "Ocorreu um erro ao remover a concessionária " + ccrToDelete.getCodigo() + " - " + ccrToDelete.getNomeFantasia() + "! Tente novamente.";
+		}
+		
+		Servlet servlet = servletResolver.resolveServlet(request.getResource(), "/apps/jeep-painel/templates/concessionarias.jsp");
+		request.setAttribute("msg", msg);
+		request.setAttribute("concessionarias", concessionarias);
+	    servlet.service(request, response);
+	}
+	
+	private String saveConcessionariasJson(final List<ConcessionariaVO> jsonListObject) {
+		return saveConcessionariasJson(gson.toJson(jsonListObject));
+	}
+	
+	private String saveConcessionariasJson(final String json) {
+		return resourceService.writeToDam(ResourceServiceImpl.CONCESSIONARIA_JSON, json);
+	}
+	
+	private List<ConcessionariaVO> getConcessionariasJson() {
+		
+		final String json = resourceService.readFromDam(ResourceServiceImpl.CONCESSIONARIA_JSON);
+		List<ConcessionariaVO> concessionarias = null;
+		
+		if(StringUtils.isNotBlank(json)) {
+			concessionarias = gson.fromJson(json, new TypeToken<List<ConcessionariaVO>>(){}.getType());
+		}
+		return concessionarias;
 	}
 }

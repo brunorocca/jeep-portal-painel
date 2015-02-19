@@ -1,5 +1,7 @@
 package br.com.isobar.jeep.portal.painel.model;
 
+import com.google.gson.annotations.SerializedName;
+
 public class ConcessionariaVO {
 	
 	/*
@@ -31,6 +33,7 @@ public class ConcessionariaVO {
 	   "longitude": -67.80112629999996
 	 */
 	
+	@SerializedName("dealersCode")
 	private Long codigo;
 	private String nome;
 	private String nomeFantasia;
@@ -40,6 +43,7 @@ public class ConcessionariaVO {
 	private String cep;
 	private String uf;
 	private String telefone;
+	@SerializedName("email_consultor")
 	private String emailConsultor;
 	private String email;
 	private String emailRepresentante;
@@ -60,6 +64,13 @@ public class ConcessionariaVO {
 	private boolean eletrica;
 	private boolean chrysler;
 	
+	public ConcessionariaVO() {
+		super();
+	}
+	public ConcessionariaVO(Long codigo) {
+		super();
+		this.codigo = codigo;
+	}
 	public Long getCodigo() {
 		return codigo;
 	}
@@ -227,5 +238,32 @@ public class ConcessionariaVO {
 	}
 	public void setChrysler(boolean chrysler) {
 		this.chrysler = chrysler;
+	}
+	@Override
+	public String toString() {
+		return "ConcessionariaVO [codigo=" + codigo + ", nomeFantasia=" + nomeFantasia + "]";
+	}
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((codigo == null) ? 0 : codigo.hashCode());
+		return result;
+	}
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		ConcessionariaVO other = (ConcessionariaVO) obj;
+		if (codigo == null) {
+			if (other.codigo != null)
+				return false;
+		} else if (!codigo.equals(other.codigo))
+			return false;
+		return true;
 	}
 }
