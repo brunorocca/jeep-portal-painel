@@ -1,11 +1,22 @@
 ﻿<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@include file="/libs/foundation/global.jsp"%>
+<!DOCTYPE html>
 <html>
 	<head>
 		<meta charset="UTF-8">
 		<title>Painel de Controle - Concessionárias</title>
-	</head>
-     
+		<style>
+			table, th, td {
+			    border: 1px solid black;
+		    	border-collapse: collapse;
+		    	border-spacing: 5px;	
+			}
+			th,td {
+			    padding: 15px; 
+			    text-align: left;
+			}
+		</style>
+		</head>
 	<body>
 
 		<h1>Concessionárias</h1>
