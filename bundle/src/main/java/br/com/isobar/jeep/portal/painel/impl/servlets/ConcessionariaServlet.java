@@ -22,9 +22,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import br.com.isobar.jeep.portal.importacao.ImportacaoConcessionaria;
-import br.com.isobar.jeep.portal.painel.impl.ResourceService;
-import br.com.isobar.jeep.portal.painel.impl.ResourceServiceImpl;
 import br.com.isobar.jeep.portal.painel.model.ConcessionariaVO;
+import br.com.isobar.jeep.portal.painel.service.ResourceService;
+import br.com.isobar.jeep.portal.painel.service.ResourceServiceImpl;
 import br.com.isobar.jeep.portal.utils.FileUploadJeepUtil;
 
 import com.google.gson.Gson;

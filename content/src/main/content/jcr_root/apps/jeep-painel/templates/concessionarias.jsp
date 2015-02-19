@@ -12,11 +12,25 @@
 		<a href="/painel/concessionarias" style="font-size: 30px; text-decoration: none">Importar Concessionárias</a>
 	
 		<table style="width:100%">
-			
-			
-			
+			<tr>
+				<th>Código</th>
+				<th>Nome</th>
+				<th>Endereço</th>
+				<th>Email Vend.</th>
+				<th>Email Consultor</th>
+				<th>Latitude</th>
+				<th>Longitude</th>
+			</tr>
 			<c:forEach var="ccr" items="${concessionarias}">
-				</br>${ccr.codigo} - ${ccr.nome} - ${ccr.nomeFantasia} 
+			<tr>
+				<td>${ccr.codigo}</td>
+				<td>${ccr.nome}</td>
+				<td>${ccr.endereco}</td>
+				<td>${ccr.email}</td>
+				<td>${ccr.emailConsultor}</td>
+				<td>${ccr.latitude}</td>
+				<td>${ccr.longitude}</td>
+			</tr>
 			</c:forEach>
 		</table>
 
