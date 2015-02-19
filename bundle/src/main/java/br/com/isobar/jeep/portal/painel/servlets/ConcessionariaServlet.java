@@ -1,4 +1,4 @@
-package br.com.isobar.jeep.portal.painel.impl.servlets;
+package br.com.isobar.jeep.portal.painel.servlets;
 
 import java.io.File;
 import java.io.IOException;

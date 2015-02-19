@@ -1,4 +1,4 @@
-package br.com.isobar.jeep.portal.painel.impl.filters;
+package br.com.isobar.jeep.portal.painel.filters;
 
 import java.io.IOException;
 
