@@ -4,7 +4,7 @@
 <html>
 	<head>
 		<meta charset="UTF-8">
-		<title>Painel de Controle - Concessionárias</title>
+		<title>Painel de Controle - Concession&aacute;rias</title>
 		<style>
 			.concessionariaTable {
 				margin:0px;padding:0px;
@@ -108,7 +108,7 @@
 			<div class="message">${msg}</div>
 		</c:if>
 
-		<h1>Concessionárias</h1>
+		<h1>Concession&aacute;rias</h1>
 	
 		<form action="/painel/concessionarias" method="POST" enctype="multipart/form-data">
 			Importar arquivo CSV: <br /> 
@@ -117,18 +117,22 @@
 			<input type="submit" value="Importar"> 
 			<br />
 		</form>
+		
+		<form action="/painel/concessionarias" method="DELETE" id="formDeleteConcessionaria" class="formDeleteConcessionaria">
+			<input type="hidden" name="idConcessionaria" id="idConcessionaria" value="">
+		</form>
 	
 		<div class="concessionariaTable">
 			<table style="width:100%">
 				<tr>
-					<td>Código</td>
+					<td>C&oacute;digo</td>
 					<td>Nome</td>
-					<td>Endereço</td>
+					<td>Endere&ccedil;o</td>
 					<td>Email Vend.</td>
 					<td>Email Consultor</td>
 					<td>Latitude</td>
 					<td>Longitude</td>
-					<td>Ação</td>
+					<td>A&ccedil;&atilde;o</td>
 				</tr>
 				<c:forEach var="ccr" items="${concessionarias}">
 				<tr>
@@ -139,10 +143,23 @@
 					<td>${ccr.emailConsultor}</td>
 					<td>${ccr.latitude}</td>
 					<td>${ccr.longitude}</td>
-					<td><a href="#">Editar</a> <a href="#">Excluir</a></td>
+					<td><a href="#">Editar</a> <a href="#" onclick="excluir(${ccr.codigo})">Excluir</a></td>
 				</tr>
 				</c:forEach>
 			</table>
 		</div>
+		<script src="http://code.jquery.com/jquery-2.1.3.min.js"></script>
+		<script type="text/javascript">
+			function excluir(idConcessionaria) {
+				console.log("idConcessionaria: " +idConcessionaria);
+	    		$.ajax({
+	    		    url: '/painel/concessionarias?idConcessionaria='+idConcessionaria,
+	    		    type: 'DELETE',
+	    		    success: function(result) {
+	    		    	location.reload();
+	    		    }
+	    		});
+	    	}
+		</script>
 	</body>
 </html>

@@ -43,7 +43,7 @@ public class ResourceServiceImpl implements ResourceService {
 	public static final String USERNAME = "admin";
 	public static final String PASSWORD = "admin";
 	public static final String JSON_PATH = "/content/dam/jeep-portal/json/";
-	public static final String CONCESSIONARIA_JSON = "concessionarias.json";
+	public static final String CONCESSIONARIA_JSON = "ccs.json";
 	public static final String HEADER_JSON = "header.json";
 	public static final String VEICULOS_JSON = "veiculos.json";
 	
