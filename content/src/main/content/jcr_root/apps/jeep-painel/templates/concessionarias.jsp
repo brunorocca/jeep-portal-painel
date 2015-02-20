@@ -117,10 +117,6 @@
 			<input type="submit" value="Importar"> 
 			<br />
 		</form>
-		
-		<form action="/painel/concessionarias" method="DELETE" id="formDeleteConcessionaria" class="formDeleteConcessionaria">
-			<input type="hidden" name="idConcessionaria" id="idConcessionaria" value="">
-		</form>
 	
 		<div class="concessionariaTable">
 			<table style="width:100%">
