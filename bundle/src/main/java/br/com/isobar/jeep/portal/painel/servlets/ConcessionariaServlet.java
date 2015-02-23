@@ -15,7 +15,6 @@ import org.apache.felix.scr.annotations.Reference;
 import org.apache.felix.scr.annotations.Service;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.SlingHttpServletResponse;
-import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.servlets.ServletResolver;
 import org.apache.sling.api.servlets.SlingAllMethodsServlet;
 import org.slf4j.Logger;
@@ -79,16 +78,30 @@ public class ConcessionariaServlet extends SlingAllMethodsServlet {
 	protected void doPut(SlingHttpServletRequest request, SlingHttpServletResponse response) 
 			throws ServletException, IOException {
 		
+		logger.info("Iniciando ConcessionariaServlet > PUT");
 		
+		final String idConcessionaria = request.getParameter("idConcessionaria");
+		logger.debug("idConcessionaria [{}]", idConcessionaria);
 		
+		final List<ConcessionariaVO> concessionarias = getConcessionariasJson();
+		final ConcessionariaVO ccrToEdit = concessionarias.get(concessionarias.indexOf(new ConcessionariaVO(Long.valueOf(idConcessionaria))));
 		
+		logger.info("Editando " + ccrToEdit);
+		boolean removed = concessionarias.remove(ccrToEdit);
+		final String jsonPath = saveConcessionariasJson(concessionarias);
 		
-		final String msg = "Hello Broccaaaaaa!!! Im a Servlet!! METHOD PUT";
-		System.out.println(msg);
+		final String msg;
+		if(removed && StringUtils.isNotBlank(jsonPath)) {
+			msg = "Concessionária " + ccrToEdit.getCodigo() + " - " + ccrToEdit.getNomeFantasia() + " removida com sucesso!";
+		}
+		else {
+			msg = "Ocorreu um erro ao remover a concessionária " + ccrToEdit.getCodigo() + " - " + ccrToEdit.getNomeFantasia() + "! Tente novamente.";
+		}
 		
-		final Resource resource = request.getResource();
-		response.getOutputStream().println(resource.toString());
-		response.getOutputStream().println(msg);
+		Servlet servlet = servletResolver.resolveServlet(request.getResource(), "/apps/jeep-painel/templates/concessionarias.jsp");
+		request.setAttribute("msg", msg);
+		request.setAttribute("concessionarias", concessionarias);
+	    servlet.service(request, response);
 	}
 
 	@Override
